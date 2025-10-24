@@ -8,8 +8,9 @@ import {
 import { Link } from "@solidjs/router"
 import { createMemo, For, Show } from "solid-js"
 import { usePath, useRouter, useT } from "~/hooks"
-import { getSetting, local } from "~/store"
+import { getSetting, getMainColor, local } from "~/store"
 import { encodePath, hoverColor, joinBase } from "~/utils"
+import { changeColor } from "seemly"
 
 export const Nav = () => {
   const { pathname, isShare } = useRouter()
@@ -76,7 +77,7 @@ export const Nav = () => {
                 css={{
                   wordBreak: "break-all",
                 }}
-                color="unset"
+                color={i() === 0 && !isShare() ? getMainColor() : "unset"}
                 _hover={{ backgroundColor: hoverColor(), color: "unset" }}
                 _active={{ transform: "scale(.95)", transition: "0.1s" }}
                 cursor="pointer"
@@ -86,6 +87,11 @@ export const Nav = () => {
                 as={isLast() ? undefined : Link}
                 href={joinBase(href)}
                 onMouseEnter={() => setPathAs(path)}
+                backgroundColor={
+                  i() === 0 && !isShare()
+                    ? changeColor(getMainColor(), { alpha: 0.15 })
+                    : undefined
+                }
               >
                 {text()}
               </BreadcrumbLink>

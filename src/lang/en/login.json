@@ -3,7 +3,7 @@
   "username-tips": "Input your username",
   "password-tips": "Input your password",
   "otp-tips": "Input your OTP Code",
-  "remember": "Remember me",
+  "remember": "Remember username and password",
   "forget": "Forget password?",
   "forget_url": "https://doc.oplist.org/faq/howto#how-to-get-password-if-i-forget-it",
   "clear": "Clear",

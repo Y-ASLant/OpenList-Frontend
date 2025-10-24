@@ -1,6 +1,5 @@
 import {
   Box,
-  Center,
   createDisclosure,
   Drawer,
   DrawerBody,
@@ -11,12 +10,15 @@ import {
   Flex,
   Heading,
   HStack,
+  Icon,
   IconButton,
+  useColorMode,
   useColorModeValue,
 } from "@hope-ui/solid"
 import { TiThMenu } from "solid-icons/ti"
-import { IoExit } from "solid-icons/io"
-import { SwitchColorMode, SwitchLanguageWhite } from "~/components"
+import { IoExit, IoLanguageOutline } from "solid-icons/io"
+import { FiSun, FiMoon } from "solid-icons/fi"
+import { SwitchLanguage } from "~/components"
 import { useFetch, useRouter, useT } from "~/hooks"
 import { SideMenu } from "./SideMenu"
 import { side_menu_items } from "./sidemenu_items"
@@ -30,6 +32,9 @@ const [logOutReqLoading, logOutReq] = useFetch(
 const Header = () => {
   const t = useT()
   const { to } = useRouter()
+  const { toggleColorMode } = useColorMode()
+  const colorModeIcon = useColorModeValue(FiMoon, FiSun)
+
   const logOut = async () => {
     handleResp(await logOutReq(), () => {
       changeToken()
@@ -58,10 +63,10 @@ const Header = () => {
             icon={<TiThMenu />}
             display={{ "@sm": "none" }}
             onClick={onOpen}
-            size="sm"
+            size="md"
           />
           <Heading
-            fontSize="$xl"
+            fontSize="$2xl"
             color="$info9"
             cursor="pointer"
             onClick={() => {
@@ -71,13 +76,25 @@ const Header = () => {
             {t("manage.title")}
           </Heading>
         </HStack>
-        <HStack spacing="$1">
+        <HStack spacing="$2">
+          <SwitchLanguage
+            as={IconButton}
+            aria-label="switch language"
+            icon={<IoLanguageOutline />}
+            size="md"
+          />
+          <IconButton
+            aria-label="toggle color mode"
+            icon={<Icon as={colorModeIcon()} />}
+            onClick={toggleColorMode}
+            size="md"
+          />
           <IconButton
             aria-label="logout"
             icon={<IoExit />}
             loading={logOutReqLoading()}
             onClick={logOut}
-            size="sm"
+            size="md"
           />
         </HStack>
       </Flex>
@@ -88,12 +105,6 @@ const Header = () => {
           <DrawerHeader color="$info9">{t("manage.title")}</DrawerHeader>
           <DrawerBody>
             <SideMenu items={side_menu_items} />
-            <Center>
-              <HStack spacing="$4" p="$2" color="$neutral11">
-                <SwitchLanguageWhite />
-                <SwitchColorMode />
-              </HStack>
-            </Center>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

@@ -10,6 +10,7 @@ import {
   FormControl,
   FormLabel,
   HStack,
+  Icon,
   Input,
   Select,
   SelectContent,
@@ -24,10 +25,14 @@ import {
   VStack,
   Switch as HopeSwitch,
   IconButton,
+  useColorMode,
+  useColorModeValue,
 } from "@hope-ui/solid"
 import { For, Match, onCleanup, Switch } from "solid-js"
 import { FaSolidMinus, FaSolidPlus } from "solid-icons/fa"
-import { SwitchLanguageWhite, SwitchColorMode } from "~/components"
+import { IoLanguageOutline } from "solid-icons/io"
+import { FiSun, FiMoon } from "solid-icons/fi"
+import { SwitchLanguage } from "~/components"
 import { useT } from "~/hooks"
 import { initialLocalSettings, local, LocalSetting, setLocal } from "~/store"
 import { bus } from "~/utils"
@@ -124,6 +129,9 @@ function LocalSettingEdit(props: LocalSetting) {
 export const LocalSettings = () => {
   const { isOpen, onOpen, onClose } = createDisclosure()
   const t = useT()
+  const { toggleColorMode } = useColorMode()
+  const colorModeIcon = useColorModeValue(FiMoon, FiSun)
+
   const handler = (name: string) => {
     if (name === "local_settings") {
       onOpen()
@@ -137,8 +145,35 @@ export const LocalSettings = () => {
     <Drawer opened={isOpen()} placement="right" onClose={onClose}>
       <DrawerOverlay />
       <DrawerContent>
-        <DrawerCloseButton />
-        <DrawerHeader color="$info9">
+        <HStack
+          position="absolute"
+          top="$3"
+          right="$3"
+          spacing="$2"
+          zIndex="$docked"
+        >
+          <SwitchLanguage
+            as={IconButton}
+            aria-label="switch language"
+            icon={<Icon as={IoLanguageOutline} boxSize="$5" />}
+            variant="ghost"
+            size="sm"
+          />
+          <IconButton
+            aria-label="toggle color mode"
+            icon={<Icon as={colorModeIcon()} boxSize="$5" />}
+            onClick={toggleColorMode}
+            variant="ghost"
+            size="sm"
+          />
+          <DrawerCloseButton position="relative" top="0" right="0" />
+        </HStack>
+        <DrawerHeader
+          color="$info9"
+          display="flex"
+          alignItems="center"
+          minH="$12"
+        >
           {t("home.toolbar.local_settings")}
         </DrawerHeader>
         <DrawerBody>
@@ -147,12 +182,6 @@ export const LocalSettings = () => {
               {(setting) => <LocalSettingEdit {...setting} />}
             </For>
           </VStack>
-          <Center mt="$4">
-            <HStack spacing="$4" p="$2" color="$neutral11">
-              <SwitchLanguageWhite />
-              <SwitchColorMode />
-            </HStack>
-          </Center>
         </DrawerBody>
       </DrawerContent>
     </Drawer>

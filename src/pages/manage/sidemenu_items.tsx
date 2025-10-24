@@ -8,7 +8,6 @@ import {
   BsJoystick,
   BsMedium,
   BsFingerprint,
-  BsFront,
   BsCloudUploadFill,
   BsSearch,
   BsBucket,
@@ -22,7 +21,7 @@ import { OcWorkflow2 } from "solid-icons/oc"
 import { IoCopy, IoMove, IoHome, IoMagnetOutline } from "solid-icons/io"
 import { Component, lazy } from "solid-js"
 import { Group, UserRole } from "~/types"
-import { FaSolidBook, FaSolidDatabase } from "solid-icons/fa"
+import { FaSolidDatabase } from "solid-icons/fa"
 import { TbArchive } from "solid-icons/tb"
 
 export type SideMenuItem = SideMenuItemProps & {
@@ -198,20 +197,6 @@ export const side_menu_items: SideMenuItem[] = [
     to: "/@manage/backup-restore",
     icon: FaSolidDatabase,
     component: lazy(() => import("./backup-restore")),
-  },
-  {
-    title: "manage.sidemenu.about",
-    icon: BsFront,
-    to: "/@manage/about",
-    role: UserRole.GUEST,
-    component: lazy(() => import("./About")),
-  },
-  {
-    title: "manage.sidemenu.docs",
-    icon: FaSolidBook,
-    to: "https://doc.oplist.org",
-    role: UserRole.GUEST,
-    external: true,
   },
   {
     title: "manage.sidemenu.home",

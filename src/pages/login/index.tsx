@@ -231,12 +231,14 @@ const Login = () => {
         }}
         spacing="$4"
       >
-        <Flex alignItems="center" justifyContent="space-around">
-          <Image mr="$2" boxSize="$12" src={logo()} />
-          <Heading color="$info9" fontSize="$2xl">
-            {title()}
-          </Heading>
-        </Flex>
+        <Center>
+          <Image
+            boxSize="$14"
+            src={logo()}
+            cursor="pointer"
+            onClick={() => window.open("https://aslant.top", "_blank")}
+          />
+        </Center>
         <Show
           when={!needOpt()}
           fallback={
@@ -274,26 +276,16 @@ const Login = () => {
               }}
             />
           </Show>
-          <Flex
-            px="$1"
+          <Checkbox
             w="$full"
-            fontSize="$sm"
             color="$neutral10"
-            justifyContent="space-between"
-            alignItems="center"
+            checked={remember() === "true"}
+            onChange={() =>
+              setRemember(remember() === "true" ? "false" : "true")
+            }
           >
-            <Checkbox
-              checked={remember() === "true"}
-              onChange={() =>
-                setRemember(remember() === "true" ? "false" : "true")
-              }
-            >
-              {t("login.remember")}
-            </Checkbox>
-            <Text as="a" target="_blank" href={t("login.forget_url")}>
-              {t("login.forget")}
-            </Text>
-          </Flex>
+            {t("login.remember")}
+          </Checkbox>
         </Show>
         <HStack w="$full" spacing="$2">
           <Show when={!useauthn()}>

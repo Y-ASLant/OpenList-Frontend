@@ -9,17 +9,20 @@ import {
 } from "@hope-ui/solid"
 import { changeColor } from "seemly"
 import { Show, createMemo } from "solid-js"
-import { getMainColor, getSetting, local, objStore, State } from "~/store"
+import { getMainColor, getSetting, local, objStore, State, me } from "~/store"
 import { BsSearch } from "solid-icons/bs"
 import { CenterLoading } from "~/components"
 import { Container } from "../Container"
 import { bus } from "~/utils"
 import { Layout } from "./layout"
 import { isMac } from "~/utils/compatibility"
+import { useRouter } from "~/hooks"
+import { UserMethods } from "~/types"
 
 export const Header = () => {
   const logos = getSetting("logo").split("\n")
   const logo = useColorModeValue(logos[0], logos.pop())
+  const { to } = useRouter()
 
   const stickyProps = createMemo<CenterProps>(() => {
     switch (local["position_of_header_navbar"]) {
@@ -29,6 +32,14 @@ export const Header = () => {
         return { position: undefined, zIndex: undefined, top: undefined }
     }
   })
+
+  const handleLogoClick = () => {
+    if (UserMethods.is_guest(me())) {
+      to("/@login")
+    } else {
+      to("/@manage")
+    }
+  }
 
   return (
     <Center
@@ -41,7 +52,8 @@ export const Header = () => {
       <Container>
         <HStack
           px="calc(2% + 0.5rem)"
-          py="$2"
+          pt="$6"
+          pb="$2"
           w="$full"
           justifyContent="space-between"
         >
@@ -51,6 +63,8 @@ export const Header = () => {
               h="$full"
               w="auto"
               fallback={<CenterLoading />}
+              cursor="pointer"
+              onClick={handleLogoClick}
             />
           </HStack>
           <HStack class="header-right" spacing="$2">

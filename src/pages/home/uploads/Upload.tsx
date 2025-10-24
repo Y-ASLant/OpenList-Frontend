@@ -13,7 +13,7 @@ import {
   Box,
   Stack,
 } from "@hope-ui/solid"
-import { createSignal, For, Show } from "solid-js"
+import { createSignal, For, Show, onMount, createEffect } from "solid-js"
 import { usePath, useRouter, useT } from "~/hooks"
 import { getMainColor, uploadConfig, setUploadConfig } from "~/store"
 import {
@@ -103,17 +103,46 @@ const Upload = () => {
   const setUpload = (path: string, key: keyof UploadFileProps, value: any) => {
     setUploadFiles("uploads", (upload) => upload.path === path, key, value)
   }
-  const uploaders = getUploads()
-  const [curUploader, setCurUploader] = createSignal(uploaders[0])
+  const [uploaders, setUploaders] = createSignal<
+    Array<{ name: string; upload: any }>
+  >([])
+  const [curUploader, setCurUploader] = createSignal<
+    { name: string; upload: any } | undefined
+  >(undefined)
+
+  // Load uploaders on mount and when path changes
+  onMount(async () => {
+    const uploads = await getUploads(pathname())
+    setUploaders(uploads)
+    if (uploads.length > 0) {
+      setCurUploader(uploads[0])
+    }
+  })
+
+  createEffect(async () => {
+    const currentPath = pathname()
+    const uploads = await getUploads(currentPath)
+    setUploaders(uploads)
+    if (uploads.length > 0 && !curUploader()) {
+      setCurUploader(uploads[0])
+    }
+  })
+
   const handleFile = async (file: File) => {
     const path = file.webkitRelativePath ? file.webkitRelativePath : file.name
     setUpload(path, "status", "uploading")
     const uploadPath = pathJoin(pathname(), path)
+    const uploader = curUploader()
+    if (!uploader) {
+      setUpload(path, "status", "error")
+      setUpload(path, "msg", "No uploader available")
+      return
+    }
     try {
-      const err = await curUploader().upload(
+      const err = await uploader.upload(
         uploadPath,
         file,
-        (key, value) => {
+        (key: keyof UploadFileProps, value: any) => {
           setUpload(path, key, value)
         },
         uploadConfig.asTask,
@@ -241,22 +270,27 @@ const Upload = () => {
             <Heading size="lg" textAlign="center">
               {t("home.upload.upload-tips")}
             </Heading>
-            <Box w={{ "@initial": "80%", "@md": "30%" }}>
-              <SelectWrapper
-                value={curUploader().name}
-                onChange={(name) => {
-                  setCurUploader(
-                    uploaders.find((uploader) => uploader.name === name)!,
-                  )
-                }}
-                options={uploaders.map((uploader) => {
-                  return {
-                    label: uploader.name,
-                    value: uploader.name,
-                  }
-                })}
-              />
-            </Box>
+            <Show when={uploaders().length > 0 && curUploader()}>
+              <Box w={{ "@initial": "80%", "@md": "30%" }}>
+                <SelectWrapper
+                  value={curUploader()?.name || ""}
+                  onChange={(name) => {
+                    const selected = uploaders().find(
+                      (uploader: any) => uploader.name === name,
+                    )
+                    if (selected) {
+                      setCurUploader(selected)
+                    }
+                  }}
+                  options={uploaders().map((uploader: any) => {
+                    return {
+                      label: uploader.name,
+                      value: uploader.name,
+                    }
+                  })}
+                />
+              </Box>
+            </Show>
             <HStack spacing="$4">
               <VStack spacing="$2" alignItems="center">
                 <IconButton

@@ -32,6 +32,16 @@ export type ItemProps = SettingItem & {
 
 const Item = (props: ItemProps) => {
   const t = useT()
+
+  // 处理版本信息，只保留版本号部分
+  const getDisplayValue = () => {
+    if (props.key === "version" && props.value) {
+      // 移除 (Commit: xxx) - Frontend: xxx - Build at: xxx 部分
+      return props.value.split(" (")[0]
+    }
+    return props.value
+  }
+
   return (
     <FormControl w={props.w ?? "100%"} display="flex" flexDirection="column">
       <Show when={!props.hideLabel}>
@@ -57,7 +67,7 @@ const Item = (props: ItemProps) => {
           <Input
             type={props.type === Type.Number ? "number" : ""}
             id={props.key}
-            value={props.value}
+            value={getDisplayValue()}
             onInput={(e) => props.onChange?.(e.currentTarget.value)}
             readOnly={props.flag === Flag.READONLY}
           />
