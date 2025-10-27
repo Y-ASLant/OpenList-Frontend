@@ -1,13 +1,20 @@
 import { password } from "~/store"
 import { r } from "~/utils"
 import { SetUpload, Upload } from "./types"
+import { StreamUpload } from "./stream"
+
+interface DirectUploadInfo {
+  upload_url: string
+  chunk_size: number
+  headers?: Record<string, string>
+  method?: string
+}
 
 interface DirectUploadResponse {
   code: number
   message: string
   data: {
-    upload_url: string
-    chunk_size: number
+    upload_info: DirectUploadInfo | null
   }
 }
 
@@ -24,45 +31,59 @@ export const DirectUpload: Upload = async (
   const fileName = pathParts.pop() || file.name
   const dirPath = pathParts.length > 0 ? "/" + pathParts.join("/") : "/"
 
-  // Get direct upload URL from backend
-  const urlResp: DirectUploadResponse = await r.post(
-    "/fs/get_direct_upload_url",
-    {
-      path: dirPath,
-      file_name: fileName,
-      file_size: file.size,
-    },
-    {
-      headers: {
-        Password: password(),
+  // Get direct upload info from backend
+  try {
+    const resp: DirectUploadResponse = await r.post(
+      "/fs/get_direct_upload_info",
+      {
+        path: dirPath,
+        file_name: fileName,
+        file_size: file.size,
       },
-    },
-  )
+      {
+        headers: {
+          Password: password(),
+        },
+      },
+    )
 
-  if (urlResp.code !== 200) {
-    return new Error(urlResp.message)
-  }
+    const uploadInfo = resp.data?.upload_info
 
-  const uploadUrl = urlResp.data.upload_url
-  const chunkSize = urlResp.data.chunk_size || 5 * 1024 * 1024 // Default 5MB
+    // If upload_info is null, direct upload is not supported - fallback to Stream
+    if (!uploadInfo) {
+      console.log("[DirectUpload] Not supported, falling back to Stream upload")
+      return await StreamUpload(
+        uploadPath,
+        file,
+        setUpload,
+        asTask,
+        overwrite,
+        rapid,
+      )
+    }
 
-  // Upload file in chunks directly to OneDrive
-  let oldTimestamp = new Date().valueOf()
-  let oldLoaded = 0
-  let uploaded = 0
-  const totalSize = file.size
+    const uploadUrl = uploadInfo.upload_url
+    const chunkSize = uploadInfo.chunk_size || 5 * 1024 * 1024 // Default 5MB
+    const method = uploadInfo.method || "PUT"
+    const customHeaders = uploadInfo.headers || {}
 
-  while (uploaded < totalSize) {
-    const start = uploaded
-    const end = Math.min(uploaded + chunkSize, totalSize)
-    const chunk = file.slice(start, end)
+    // Upload file in chunks directly to storage
+    let oldTimestamp = new Date().valueOf()
+    let oldLoaded = 0
+    let uploaded = 0
+    const totalSize = file.size
 
-    try {
+    while (uploaded < totalSize) {
+      const start = uploaded
+      const end = Math.min(uploaded + chunkSize, totalSize)
+      const chunk = file.slice(start, end)
+
       const response = await fetch(uploadUrl, {
-        method: "PUT",
+        method,
         headers: {
           "Content-Range": `bytes ${start}-${end - 1}/${totalSize}`,
           "Content-Length": (end - start).toString(),
+          ...customHeaders,
         },
         body: chunk,
       })
@@ -90,10 +111,22 @@ export const DirectUpload: Upload = async (
       if (progress === 100) {
         setUpload("status", "success")
       }
-    } catch (error: any) {
-      return new Error(`Upload error: ${error.message}`)
     }
-  }
 
-  return undefined
+    return undefined
+  } catch (error: any) {
+    // If direct upload fails, fallback to Stream upload
+    console.log(
+      "[DirectUpload] Error occurred, falling back to Stream upload:",
+      error.message,
+    )
+    return await StreamUpload(
+      uploadPath,
+      file,
+      setUpload,
+      asTask,
+      overwrite,
+      rapid,
+    )
+  }
 }

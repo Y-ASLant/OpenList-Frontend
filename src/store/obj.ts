@@ -28,6 +28,7 @@ const initialObjStore = {
   readme: "",
   header: "",
   provider: "",
+  direct_upload_enabled: false,
   state: State.Initial,
   err: "",
 }
