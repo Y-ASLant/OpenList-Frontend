@@ -177,6 +177,7 @@ export const usePath = () => {
         ObjStore.setHeader(data.header)
         ObjStore.setWrite(data.write)
         ObjStore.setProvider(data.provider)
+        ObjStore.set({ direct_upload_enabled: data.direct_upload_enabled })
         ObjStore.setState(State.Folder)
       },
       handleErr,

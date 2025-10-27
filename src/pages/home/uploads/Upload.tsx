@@ -20,13 +20,13 @@ import {
   RiDocumentFolderUploadFill,
   RiDocumentFileUploadFill,
 } from "solid-icons/ri"
-import { getFileSize, notify, pathJoin } from "~/utils"
+import { getFileSize, notify, pathJoin, r } from "~/utils"
 import { asyncPool } from "~/utils/async_pool"
 import { createStore } from "solid-js/store"
 import { UploadFileProps, StatusBadge } from "./types"
 import { File2Upload, traverseFileTree } from "./util"
 import { SelectWrapper } from "~/components"
-import { getUploads } from "./uploads"
+import { getUploads, Uploader } from "./uploads"
 
 const UploadFile = (props: UploadFileProps) => {
   const t = useT()
@@ -103,6 +103,9 @@ const Upload = () => {
   const setUpload = (path: string, key: keyof UploadFileProps, value: any) => {
     setUploadFiles("uploads", (upload) => upload.path === path, key, value)
   }
+
+  // All upload methods are available by default
+  // Direct upload will check support during actual upload and fallback if needed
   const uploaders = getUploads()
   const [curUploader, setCurUploader] = createSignal(uploaders[0])
   const handleFile = async (file: File) => {
@@ -243,7 +246,7 @@ const Upload = () => {
             </Heading>
             <Box w={{ "@initial": "80%", "@md": "30%" }}>
               <SelectWrapper
-                value={curUploader().name}
+                value={curUploader()?.name}
                 onChange={(name) => {
                   setCurUploader(
                     uploaders.find((uploader) => uploader.name === name)!,
