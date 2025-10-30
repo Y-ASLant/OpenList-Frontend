@@ -37,5 +37,10 @@
   },
   "input_password": "Please input share code",
   "copy_msg": "Copy link",
-  "no_permission_tip": "To create a share, you need \"Share\" permission."
+  "no_permission_tip": "To create a share, you need \"Share\" permission.",
+  "summary_template": "@{{creator}} shared {{#each files}}{{#if @first}}\"{{filename this}}\"{{/if}}{{#if @last}}{{#unless (eq @index 0)}} and {{@index}} more files{{/unless}}{{/if}}{{/each}} from {{site_title}}: {{base_url}}/@s/{{id}}{{#if pwd}} , the share code is {{pwd}}{{/if}}{{#if expires}}, please access before {{dateLocaleString expires}}.{{/if}}",
+  "errors": {
+    "does_not_exist": "The share does not exist",
+    "expired_or_invalid": "The share has expired or is no longer valid"
+  }
 }

@@ -274,10 +274,15 @@ export const Share = () => {
                     const templateData = makeTemplateData(data, {
                       site_title: getSetting("site_title"),
                     })
-                    const msg = matchTemplate(
-                      getSetting("share_summary_content"),
-                      templateData,
-                    )
+                    // 使用翻译的模板替代后端默认英文模板
+                    const backendTemplate = getSetting("share_summary_content")
+                    const defaultEnTemplate =
+                      '@{{creator}} shared {{#each files}}{{#if @first}}"{{filename this}}"{{/if}}{{#if @last}}{{#unless (eq @index 0)}} and {{@index}} more files{{/unless}}{{/if}}{{/each}} from {{site_title}}: {{base_url}}/@s/{{id}}{{#if pwd}} , the share code is {{pwd}}{{/if}}{{#if expires}}, please access before {{dateLocaleString expires}}.{{/if}}'
+                    const template =
+                      backendTemplate === defaultEnTemplate
+                        ? t("shares.summary_template")
+                        : backendTemplate
+                    const msg = matchTemplate(template, templateData)
                     setLink(msg)
                   })
                 }}
