@@ -20,13 +20,13 @@ import {
   RiDocumentFolderUploadFill,
   RiDocumentFileUploadFill,
 } from "solid-icons/ri"
-import { getFileSize, notify, pathJoin, r } from "~/utils"
+import { getFileSize, notify, pathJoin } from "~/utils"
 import { asyncPool } from "~/utils/async_pool"
 import { createStore } from "solid-js/store"
 import { UploadFileProps, StatusBadge } from "./types"
 import { File2Upload, traverseFileTree } from "./util"
 import { SelectWrapper } from "~/components"
-import { getUploads, Uploader } from "./uploads"
+import { getUploads } from "./uploads"
 
 const UploadFile = (props: UploadFileProps) => {
   const t = useT()
@@ -105,7 +105,6 @@ const Upload = () => {
   }
 
   // All upload methods are available by default
-  // Direct upload will check support during actual upload and fallback if needed
   const uploaders = getUploads()
   const [curUploader, setCurUploader] = createSignal(uploaders[0])
   const handleFile = async (file: File) => {
@@ -113,16 +112,18 @@ const Upload = () => {
     setUpload(path, "status", "uploading")
     const uploadPath = pathJoin(pathname(), path)
     try {
-      const err = await curUploader().upload(
-        uploadPath,
-        file,
-        (key, value) => {
-          setUpload(path, key, value)
-        },
-        uploadConfig.asTask,
-        uploadConfig.overwrite,
-        uploadConfig.rapid,
-      )
+      const err = await curUploader()
+        .upload(
+          uploadPath,
+          file,
+          (key, value) => {
+            setUpload(path, key, value)
+          },
+          uploadConfig.asTask,
+          uploadConfig.overwrite,
+          uploadConfig.rapid,
+        )
+        .catch((err) => err)
       if (!err) {
         setUpload(path, "status", "success")
         setUpload(path, "progress", 100)

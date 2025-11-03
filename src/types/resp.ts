@@ -18,7 +18,7 @@ export type FsListResp = Resp<{
   header: string
   write: boolean
   provider: string
-  direct_upload_enabled: boolean
+  direct_upload_tools?: string[]
 }>
 
 export type SearchNode = {

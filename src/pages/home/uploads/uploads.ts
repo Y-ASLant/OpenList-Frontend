@@ -1,40 +1,36 @@
 import { objStore } from "~/store"
 import { FormUpload } from "./form"
 import { StreamUpload } from "./stream"
-import { DirectUpload } from "./direct"
+import { HttpDirectUpload } from "./direct"
 import { Upload } from "./types"
 
-export type Uploader = {
+type Uploader = {
   upload: Upload
   name: string
-  provider: RegExp
+  available: () => boolean
 }
 
 // All upload methods
 const AllUploads: Uploader[] = [
   {
-    name: "Direct",
-    upload: DirectUpload,
-    provider: /.*/,
+    name: "HTTP Direct",
+    upload: HttpDirectUpload,
+    available: () => {
+      return objStore.direct_upload_tools?.includes("HttpDirect") || false
+    },
   },
   {
     name: "Stream",
     upload: StreamUpload,
-    provider: /.*/,
+    available: () => true,
   },
   {
     name: "Form",
     upload: FormUpload,
-    provider: /.*/,
+    available: () => true,
   },
 ]
 
 export const getUploads = (): Pick<Uploader, "name" | "upload">[] => {
-  return AllUploads.filter((u) => {
-    // Filter Direct upload based on backend configuration
-    if (u.name === "Direct" && !objStore.direct_upload_enabled) {
-      return false
-    }
-    return u.provider.test(objStore.provider)
-  })
+  return AllUploads.filter((u) => u.available())
 }
