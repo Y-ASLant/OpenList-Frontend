@@ -49,11 +49,14 @@ const UploadFile = (props: UploadFileProps) => {
       >
         {props.path}
       </Text>
-      <HStack spacing="$2">
-        <Badge colorScheme={StatusBadge[props.status]}>
-          {t(`home.upload.${props.status}`)}
-        </Badge>
-        <Text>{getFileSize(props.speed)}/s</Text>
+      <HStack spacing="$2" w="$full" justifyContent="space-between">
+        <HStack spacing="$2">
+          <Badge colorScheme={StatusBadge[props.status]}>
+            {t(`home.upload.${props.status}`)}
+          </Badge>
+          <Text>{getFileSize(props.speed)}/s</Text>
+        </HStack>
+        <Text color="$neutral11">{getFileSize(props.size)}</Text>
       </HStack>
       <Progress
         w="$full"
@@ -111,17 +114,17 @@ const Upload = () => {
   >(undefined)
 
   // Load uploaders on mount and when path changes
-  onMount(async () => {
-    const uploads = await getUploads(pathname())
+  onMount(() => {
+    const uploads = getUploads()
     setUploaders(uploads)
     if (uploads.length > 0) {
       setCurUploader(uploads[0])
     }
   })
 
-  createEffect(async () => {
+  createEffect(() => {
     const currentPath = pathname()
-    const uploads = await getUploads(currentPath)
+    const uploads = getUploads()
     setUploaders(uploads)
     if (uploads.length > 0 && !curUploader()) {
       setCurUploader(uploads[0])
