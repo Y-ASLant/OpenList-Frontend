@@ -1,0 +1,18 @@
+{
+  "path": "路径",
+  "password": "密码",
+  "write": "写入",
+  "hide": "隐藏",
+  "readme": "说明",
+  "readme_help": "在底部渲染一个Markdown，支持内容或链接",
+  "header": "顶部说明",
+  "header_help": "在顶部渲染一个 Markdown，支持内容或链接",
+  "apply_sub": "应用到子文件夹",
+  "hide_help": "每行一个正则表达式",
+  "read_users": "可读用户",
+  "read_users_help": "仅选定的具有相应权限的用户可以读取此路径。",
+  "write_users": "可写用户",
+  "write_users_help": "仅选定的具有相应权限的用户可以写入此路径。",
+  "all_permitted_users": "所有有权限的用户",
+  "write_help": "绕过用户权限检查进行内容写入（创建/上传/修改）。请谨慎使用。"
+}
