@@ -16,7 +16,7 @@ M  src/lang/en/global.json
 M  src/lang/en/home.json
 M  src/lang/en/manage.json
 A  src/lang/zh-CN/**                    # 17 个文件（完整中文语言包）
-D  src/pages/home/Footer.tsx
+M  src/pages/home/Footer.tsx
 M  src/pages/home/Layout.tsx
 M  src/pages/home/header/Header.tsx
 M  src/pages/home/previews/*.tsx        # 见 §11
@@ -54,10 +54,13 @@ M  src/utils/handle_resp.ts
 - **文件**：`src/pages/home/header/Header.tsx`
 - **改动**：点击 Logo → 访客 `/@login`，已登录 `/@manage`；`cursor="pointer"`、`pt="$6"`
 
-### 4. 移除主界面底部 Footer
+### 4. 主界面底部 Footer（访问量 + ICP 备案）
 
-- **文件**：`src/pages/home/Footer.tsx`（删除）、`src/pages/home/Layout.tsx`
-- **改动**：移除「由 OpenList 驱动 | 管理」；管理入口改由 Logo 承担
+- **文件**：`src/pages/home/Footer.tsx`、`src/pages/home/Layout.tsx`
+- **改动**（来自 `ASLantCloud-Web`）：
+  - 访问量统计改用 [Vercount](https://vercount.one)（`events.vercount.one/js`）
+  - ICP 备案号从站点设置 `site_icp` 读取（管理 → 设置 → 站点）；留空则不显示
+  - 需配合后端新增 `site_icp` 设置项（见 OpenList `internal/bootstrap/data/setting.go`）
 
 ### 5. 管理页侧栏精简
 
@@ -114,11 +117,11 @@ M  src/utils/handle_resp.ts
 
 ---
 
-## 三、已删除文件
+## 三、替换文件
 
-| 文件                        | 原因                 |
-| --------------------------- | -------------------- |
-| `src/pages/home/Footer.tsx` | 底栏合并至 Logo 点击 |
+| 文件                        | 说明                                            |
+| --------------------------- | ----------------------------------------------- |
+| `src/pages/home/Footer.tsx` | 由 OpenList 官方底栏替换为访问量 + ICP 备案底栏 |
 
 ---
 
@@ -138,7 +141,7 @@ M  src/utils/handle_resp.ts
 ## 五、验证清单
 
 - [ ] 登录页：Logo 居中、无「登录到」、无忘记密码、气泡背景
-- [ ] 主界面：无 Footer，Logo 跳转管理
+- [ ] 主界面：底部显示访问量与 ICP 备案，Logo 可跳转管理
 - [ ] 管理页：无「关于」「帮助文档」，标题打开 `api.oplist.org`
 - [ ] 默认语言中文（清除 `localStorage.lang` 后验证）
 - [ ] 后端错误显示中文

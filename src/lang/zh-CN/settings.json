@@ -105,6 +105,7 @@
   "show_disk_usage_in_plain_text": "以普通文本展示驱动空间使用情况",
   "sign_all": "签名所有",
   "site_title": "网站标题",
+  "site_icp": "ICP 备案号",
   "sso_application_name": "单点登录应用名称",
   "sso_auto_register": "单点登录自动注册",
   "sso_client_id": "单点登录客户端 ID",
