@@ -2,8 +2,6 @@ import {
   Image,
   Center,
   Flex,
-  Heading,
-  Text,
   Input,
   Button,
   useColorModeValue,
@@ -12,7 +10,7 @@ import {
   Checkbox,
   Icon,
 } from "@hope-ui/solid"
-import { createMemo, createSignal, Show, onMount, onCleanup } from "solid-js"
+import { createSignal, Show, onMount, onCleanup } from "solid-js"
 import { SwitchColorMode, SwitchLanguageWhite } from "~/components"
 import { useFetch, useLoading, useT, useTitle, useRouter } from "~/hooks"
 import {
@@ -37,10 +35,7 @@ const Login = () => {
   const logos = getSetting("logo").split("\n")
   const logo = useColorModeValue(logos[0], logos.pop())
   const t = useT()
-  const title = createMemo(() => {
-    return `${t("login.login_to")} ${getSetting("site_title")}`
-  })
-  useTitle(title)
+  useTitle(() => getSetting("site_title"))
   const bgColor = useColorModeValue("white", "$neutral1")
   const [username, setUsername] = createSignal(
     localStorage.getItem("username") || "",
@@ -236,12 +231,9 @@ const Login = () => {
         }}
         spacing="$4"
       >
-        <Flex alignItems="center" justifyContent="space-around">
-          <Image mr="$2" boxSize="$12" src={logo()} />
-          <Heading color="$info9" fontSize="$2xl">
-            {title()}
-          </Heading>
-        </Flex>
+        <Center w="$full">
+          <Image boxSize="$12" src={logo()} />
+        </Center>
         <Show
           when={!needOpt()}
           fallback={
@@ -284,7 +276,6 @@ const Login = () => {
             w="$full"
             fontSize="$sm"
             color="$neutral10"
-            justifyContent="space-between"
             alignItems="center"
           >
             <Checkbox
@@ -295,9 +286,6 @@ const Login = () => {
             >
               {t("login.remember")}
             </Checkbox>
-            <Text as="a" target="_blank" href={t("login.forget_url")}>
-              {t("login.forget")}
-            </Text>
           </Flex>
         </Show>
         <HStack w="$full" spacing="$2">
