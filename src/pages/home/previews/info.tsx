@@ -1,12 +1,10 @@
 import { Heading, Icon, Image, Text, VStack } from "@hope-ui/solid"
 import { JSXElement } from "solid-js"
-import { useT } from "~/hooks"
 import { getMainColor, objStore } from "~/store"
 import { formatDate, getFileSize } from "~/utils"
 import { getIconByObj } from "~/utils/icon"
 
 export const FileInfo = (props: { children: JSXElement }) => {
-  const t = useT()
   return (
     <VStack class="fileinfo" py="$6" spacing="$6" w="$full">
       <Image
@@ -33,7 +31,6 @@ export const FileInfo = (props: { children: JSXElement }) => {
           {[
             getFileSize(objStore.obj.size),
             formatDate(objStore.obj.modified),
-            t(`drivers.drivers.${objStore.provider}`),
           ].join("  ·  ")}
         </Text>
       </VStack>
