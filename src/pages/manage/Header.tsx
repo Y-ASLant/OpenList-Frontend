@@ -65,7 +65,7 @@ const Header = () => {
             color="$info9"
             cursor="pointer"
             onClick={() => {
-              to("/@manage")
+              window.open("https://api.oplist.org/", "_blank")
             }}
           >
             {t("manage.title")}
@@ -85,7 +85,15 @@ const Header = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader color="$info9">{t("manage.title")}</DrawerHeader>
+          <DrawerHeader
+            color="$info9"
+            cursor="pointer"
+            onClick={() => {
+              window.open("https://api.oplist.org/", "_blank")
+            }}
+          >
+            {t("manage.title")}
+          </DrawerHeader>
           <DrawerBody>
             <SideMenu items={side_menu_items} />
             <Center>
