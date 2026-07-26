@@ -10,6 +10,7 @@ import {
 } from "@hope-ui/solid"
 import { JSXElement } from "solid-js"
 import { alphaBgColor, firstUpperCase } from "."
+import { translateError } from "./translate_error"
 
 const notify = {
   render: (element: JSXElement) => {
@@ -64,7 +65,7 @@ const notify = {
   error: (message: string) => {
     notificationService.show({
       status: "danger",
-      title: firstUpperCase(message),
+      title: firstUpperCase(translateError(message)),
       // render: (props) => (
       //   <Alert status="danger" shadow="$md">
       //     <AlertIcon mr="$2_5" />

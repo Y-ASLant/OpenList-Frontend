@@ -89,8 +89,10 @@ M  src/utils/handle_resp.ts
 
 ### 10. 后端错误翻译
 
-- **文件**：`src/utils/translate_error.ts`（新增）、`src/utils/handle_resp.ts`
-- **改动**：`handleResp` 错误经 `translateError()` 输出 i18n 文案
+- **文件**：`src/utils/translate_error.ts`（新增）、`src/utils/handle_resp.ts`、`src/utils/notify.tsx`
+- **改动**：
+  - `handleResp` / `notify.error` 错误经 `translateError()` 输出 i18n 文案
+  - 映射表与 OpenList 后端（`internal/model/user.go`、`internal/errs/`、`server/handles/`）对齐
 
 ### 11. 硬编码英文 → i18n
 
