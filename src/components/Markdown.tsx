@@ -10,7 +10,7 @@ import remarkRehype from "remark-rehype"
 import { For, Show, createEffect, createMemo, createSignal, on } from "solid-js"
 import { Motion } from "solid-motionone"
 import { unified } from "unified"
-import { useCDN, useParseText, useRouter } from "~/hooks"
+import { useCDN, useParseText, useRouter, useT } from "~/hooks"
 import { useScrollListener } from "~/pages/home/toolbar/BackTop.jsx"
 import { getMainColor, getSettingBool, me } from "~/store"
 import {
@@ -176,7 +176,7 @@ async function renderMarkdown(
   }
   if (hasMermaid) {
     await loadScriptIIFE(mermaidJSPath(), "mermaid").catch(() =>
-      notify.error("Failed to load Mermaid JS, diagrams will not be rendered"),
+      notify.error(t("home.errors.failed_to_load_mermaid")),
     )
   }
 
@@ -212,7 +212,9 @@ export function Markdown(props: {
   readme?: boolean
   toc?: boolean
   sanitize?: boolean
+  sanitize?: boolean
 }) {
+  const t = useT()
   const [encoding, setEncoding] = createSignal<string>("utf-8")
   const [show, setShow] = createSignal(true)
   const [markdownHTML, setMarkdownHTML] = createSignal<string>("")

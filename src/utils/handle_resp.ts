@@ -1,5 +1,6 @@
 import { Resp } from "~/types"
 import { bus, notify } from "."
+import { translateError } from "./translate_error"
 
 export const handleResp = <T>(
   resp: Resp<T>,
@@ -13,7 +14,7 @@ export const handleResp = <T>(
     notify_success && notify.success(resp.message)
     success?.(resp.data)
   } else {
-    notify_error && notify.error(resp.message)
+    notify_error && notify.error(translateError(resp.message))
     if (auth && resp.code === 401) {
       if (location.pathname === "/@manage") {
         bus.emit("to", "/")

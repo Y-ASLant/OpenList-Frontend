@@ -52,7 +52,22 @@
       "video360": "Video360 Player",
       "archive": "Archive Previewer",
       "torrent": "Torrent Previewer"
-    }
+    },
+    "previous": "Previous",
+    "next": "Next",
+    "zoom_in": "Zoom in",
+    "zoom_out": "Zoom out",
+    "fit_page": "Fit page",
+    "fit_height": "Fit height",
+    "fit_width": "Fit width",
+    "rotate_left": "Rotate left",
+    "rotate_right": "Rotate right",
+    "info": "Info",
+    "open_in_new_tab": "Open in new tab",
+    "show_all_players": "Show all players",
+    "no_transcoding_video": "No transcoding video found",
+    "search_language": "Search language...",
+    "qrcode": "QR Code"
   },
   "layouts": {
     "list": "List View",
@@ -277,5 +292,9 @@
     "overwrite_existing": "Overwrite existing files",
     "skip_existing": "Skip existing files",
     "merge": "Only Copy new files and subdirectories"
+  },
+  "errors": {
+    "failed_to_load_mermaid": "Failed to load Mermaid JS, diagrams will not be rendered",
+    "invalid_storage_format": "Invalid storage format"
   }
 }

@@ -39,5 +39,21 @@
   "invalid_filename_chars": "Filename cannot contain: / \\ ? < > * : | \"",
   "invalid_regex": "Invalid regular expression",
   "name": "Name",
-  "go_to_storages": "Go to Storages"
+  "go_to_storages": "Go to Storages",
+  "errors": {
+    "storage_not_found": "Storage not found",
+    "storage_not_init": "Storage not initialized",
+    "please_add_storage": "Please add a storage first",
+    "object_not_found": "Object not found",
+    "object_already_exists": "Object already exists",
+    "permission_denied": "Permission denied",
+    "password_empty": "Password is empty",
+    "password_incorrect": "Password is incorrect",
+    "meta_not_found": "Meta not found",
+    "share_not_exist": "The share does not exist",
+    "share_expired": "The share has expired or is no longer valid",
+    "wrong_archive_password": "Wrong archive password",
+    "file_exists": "File already exists",
+    "failed_to_mkdir": "Failed to create directory"
+  }
 }

@@ -39,5 +39,21 @@
   "clipboard_denied": "剪贴板访问被拒绝，请在浏览器设置中允许剪贴板权限。",
   "unsaved_changes_confirm": "您有未保存的更改，确定要离开吗？",
   "invalid_filename_chars": "文件名不能包含：/ \\ ? < > * : | \"",
-  "invalid_regex": "无效的正则表达式"
+  "invalid_regex": "无效的正则表达式",
+  "errors": {
+    "storage_not_found": "存储未找到",
+    "storage_not_init": "存储未初始化",
+    "please_add_storage": "请先添加存储",
+    "object_not_found": "对象未找到",
+    "object_already_exists": "对象已存在",
+    "permission_denied": "权限不足",
+    "password_empty": "密码为空",
+    "password_incorrect": "密码错误",
+    "meta_not_found": "元数据未找到",
+    "share_not_exist": "分享不存在",
+    "share_expired": "分享已过期或失效",
+    "wrong_archive_password": "压缩包密码错误",
+    "file_exists": "文件已存在",
+    "failed_to_mkdir": "创建目录失败"
+  }
 }

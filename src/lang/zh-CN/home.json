@@ -76,7 +76,22 @@
       "video360": "360 视频播放器",
       "archive": "压缩包预览",
       "torrent": "种子文件预览"
-    }
+    },
+    "previous": "上一个",
+    "next": "下一个",
+    "zoom_in": "放大",
+    "zoom_out": "缩小",
+    "fit_page": "适应页面",
+    "fit_height": "适应高度",
+    "fit_width": "适应宽度",
+    "rotate_left": "向左旋转",
+    "rotate_right": "向右旋转",
+    "info": "信息",
+    "open_in_new_tab": "在新标签页打开",
+    "show_all_players": "显示所有播放器",
+    "no_transcoding_video": "未找到转码视频",
+    "search_language": "搜索语言...",
+    "qrcode": "二维码"
   },
   "layouts": {
     "list": "列表视图",
@@ -301,5 +316,9 @@
     "overwrite_existing": "覆盖现有文件",
     "skip_existing": "跳过现有文件",
     "merge": "仅复制新文件和子目录"
+  },
+  "errors": {
+    "failed_to_load_mermaid": "Mermaid JS 加载失败，图表将无法渲染",
+    "invalid_storage_format": "存储格式无效"
   }
 }

@@ -1,6 +1,6 @@
 import { Box, Center } from "@hope-ui/solid"
 import { Show, createMemo, createSignal, onCleanup, onMount } from "solid-js"
-import { useRouter, useLink, useFetch } from "~/hooks"
+import { useRouter, useLink, useFetch, useT } from "~/hooks"
 import {
   getMainColor,
   getSettingBool,
@@ -54,6 +54,7 @@ export interface Meta {
 }
 
 const Preview = () => {
+  const t = useT()
   const { pathname, searchParams } = useRouter()
   const { proxyLink } = useLink()
   const navigate = useNavigate()
@@ -94,7 +95,7 @@ const Preview = () => {
         index: 10,
         position: "left",
         html: '<svg fill="none" stroke-width="2" xmlns="http://www.w3.org/2000/svg" height="22" width="22" class="icon icon-tabler icon-tabler-player-track-prev-filled" width="1em" height="1em" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="overflow: visible; color: currentcolor;"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M20.341 4.247l-8 7a1 1 0 0 0 0 1.506l8 7c.647 .565 1.659 .106 1.659 -.753v-14c0 -.86 -1.012 -1.318 -1.659 -.753z" stroke-width="0" fill="currentColor"></path><path d="M9.341 4.247l-8 7a1 1 0 0 0 0 1.506l8 7c.647 .565 1.659 .106 1.659 -.753v-14c0 -.86 -1.012 -1.318 -1.659 -.753z" stroke-width="0" fill="currentColor"></path></svg>',
-        tooltip: "Previous",
+        tooltip: t("home.preview.previous"),
         click: function () {
           previous_video()
         },
@@ -104,7 +105,7 @@ const Preview = () => {
         index: 11,
         position: "left",
         html: '<svg fill="none" stroke-width="2" xmlns="http://www.w3.org/2000/svg" height="22" width="22" class="icon icon-tabler icon-tabler-player-track-next-filled" width="1em" height="1em" viewBox="0 0 24 24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="overflow: visible; color: currentcolor;"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M2 5v14c0 .86 1.012 1.318 1.659 .753l8 -7a1 1 0 0 0 0 -1.506l-8 -7c-.647 -.565 -1.659 -.106 -1.659 .753z" stroke-width="0" fill="currentColor"></path><path d="M13 5v14c0 .86 1.012 1.318 1.659 .753l8 -7a1 1 0 0 0 0 -1.506l-8 -7c-.647 -.565 -1.659 -.106 -1.659 .753z" stroke-width="0" fill="currentColor"></path></svg>',
-        tooltip: "Next",
+        tooltip: t("home.preview.next"),
         click: function () {
           next_video()
         },
@@ -323,7 +324,7 @@ const Preview = () => {
           (l) => l.url,
         )
       if (list.length === 0) {
-        notify.error("No transcoding video found")
+        notify.error(t("home.preview.no_transcoding_video"))
         return
       }
       option.url = list[list.length - 1].url
@@ -403,7 +404,7 @@ const Preview = () => {
           (l) => l.url,
         )
       if (list.length === 0) {
-        notify.error("No transcoding video found")
+        notify.error(t("home.preview.no_transcoding_video"))
         return
       }
       const quality = list.map((item, i) => {
